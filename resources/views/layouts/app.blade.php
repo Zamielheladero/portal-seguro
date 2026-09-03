@@ -9,10 +9,23 @@
 </head>
 <body>
     <header>
-        <nav>
-            <a href="{{ route('home') }}">Inicio</a>
-            <a href="{{ route('about') }}">Acerca</a>
-            <a href="{{ route('contact') }}">Contacto</a>
+       <nav>
+    <a href="{{ route('home') }}">Inicio</a>
+    <a href="{{ route('about') }}">Acerca</a>
+    <a href="{{ route('contact') }}">Contacto</a>
+
+    @auth
+        <a href="{{ route('posts.index') }}">Publicaciones</a>
+        <a href="{{ route('dashboard') }}">Mi cuenta</a>
+
+        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+            @csrf
+            <button type="submit" style="background: transparent; padding: 0.4rem 0.8rem; margin: 0;">Cerrar sesión</button>
+        </form>
+    @else
+        <a href="{{ route('login') }}">Iniciar sesión</a>
+        <a href="{{ route('register') }}">Registrarme</a>
+    @endauth
         </nav>
     </header>
     <main>

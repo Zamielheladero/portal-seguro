@@ -1,23 +1,164 @@
-@import 'tailwindcss';
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+:root {
+    --verde: #006b3f;
+    --verde-oscuro: #004d2d;
+    --gris-texto: #1f2937;
+    --gris-claro: #f3f4f6;
+    --borde: #d1d5db;
+    --rojo-error: #dc2626;
+    --sombra: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: system-ui, sans-serif;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     margin: 0;
-    color: #1f2937;
+    color: var(--gris-texto);
+    background: var(--gris-claro);
+    line-height: 1.6;
 }
+
+/* Navegación */
+header {
+    background: var(--verde);
+    box-shadow: var(--sombra);
+}
+
 nav {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 1.5rem;
     padding: 1rem 2rem;
-    background: #006b3f;
+    max-width: 900px;
+    margin: 0 auto;
 }
-nav a { color: white; text-decoration: none; }
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Contenido principal */
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+h1 {
+    color: var(--verde-oscuro);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+p {
+    color: #4b5563;
+}
+
+/* Formularios */
+form {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    max-width: 480px;
+    margin-top: 1rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    color: var(--gris-texto);
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(0, 107, 63, 0.15);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+button {
+    background: var(--verde);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1.2rem;
+    transition: background 0.15s ease;
+}
+
+button:hover {
+    background: var(--verde-oscuro);
+}
+
+/* Errores de validación */
+form p {
+    color: var(--rojo-error);
+    font-size: 0.85rem;
+    margin: 0.2rem 0 0;
+}
+
+/* Mensajes de éxito (session status) */
+main > p:first-of-type {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+}
+
+/* Lista de publicaciones */
+main > div {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--sombra);
+    margin-bottom: 1rem;
+}
+
+main a {
+    color: var(--verde);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+main a:hover {
+    text-decoration: underline;
+}
