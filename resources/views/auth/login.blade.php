@@ -6,7 +6,7 @@
     <h1>Iniciar sesión</h1>
 
     <form method="POST" action="{{ route('login.store') }}">
-        @csrf
+       @csrf
 
         <label>Correo</label>
         <input type="email" name="email" value="{{ old('email') }}" required>
