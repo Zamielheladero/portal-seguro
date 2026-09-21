@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -48,7 +49,15 @@ class User extends Authenticatable
     }
 
     public function posts()
-{
-    return $this->hasMany(Post::class);
-}
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Atajo para no repetir "$user->role === 'admin'" en Policies y vistas.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }
