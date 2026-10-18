@@ -14,7 +14,28 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Roles del sistema (SCRUM-24 / CMS-06):
+     *  - admin:    gestiona todo (usuarios, roles, eliminar productos, configuración).
+     *  - vendedor: personal interno; gestiona productos y ventas. Solo lo asigna un admin.
+     *  - cliente:  cualquier persona que se registra desde el sitio público. Sin acceso al panel.
+     */
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_VENDEDOR = 'vendedor';
+    public const ROLE_CLIENTE = 'cliente';
+
+    public const ROLES = [
+        self::ROLE_ADMIN,
+        self::ROLE_VENDEDOR,
+        self::ROLE_CLIENTE,
+    ];
+
+    /**
      * The attributes that are mass assignable.
+     *
+     * 'role' NO está aquí a propósito: así nadie puede auto-asignarse un rol
+     * enviando un campo "role" extra en el formulario de registro
+     * (mass assignment). El rol solo se cambia con forceFill() desde
+     * código que ya verificó que quien lo hace es admin.
      *
      * @var list<string>
      */
@@ -22,7 +43,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+    ];
+
+    /**
+     * Valor por defecto en memoria (coincide con el default de la BD),
+     * para que $user->role ya sea 'cliente' justo después de create().
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'role' => self::ROLE_CLIENTE,
     ];
 
     /**
@@ -58,6 +88,20 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isVendedor(): bool
+    {
+        return $this->role === self::ROLE_VENDEDOR;
+    }
+
+    /**
+     * Personal interno de la ferretería (admin o vendedor):
+     * son los únicos que pueden entrar al panel de productos/ventas.
+     */
+    public function isStaff(): bool
+    {
+        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_VENDEDOR], true);
     }
 }

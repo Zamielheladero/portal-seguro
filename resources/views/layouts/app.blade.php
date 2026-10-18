@@ -152,7 +152,9 @@
 
     @auth
         <a href="{{ route('posts.index') }}">Publicaciones</a>
-        <a href="{{ route('productos.index') }}">Productos</a>
+        @can('viewAny', App\Models\Producto::class)
+            <a href="{{ route('productos.index') }}">Productos</a>
+        @endcan
         <a href="{{ route('dashboard') }}">Mi cuenta</a>
 
         <form method="POST" action="{{ route('logout') }}">
@@ -169,4 +171,4 @@
         @yield('content')
     </main>
 </body>
-</html>
+</html>

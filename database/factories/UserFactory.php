@@ -34,6 +34,22 @@ class UserFactory extends Factory
     }
 
     /**
+     * Usuario con rol admin (el rol no es fillable, por eso se asigna después de crear).
+     */
+    public function admin(): static
+    {
+        return $this->afterMaking(fn (User $user) => $user->forceFill(['role' => User::ROLE_ADMIN]));
+    }
+
+    /**
+     * Usuario con rol vendedor.
+     */
+    public function vendedor(): static
+    {
+        return $this->afterMaking(fn (User $user) => $user->forceFill(['role' => User::ROLE_VENDEDOR]));
+    }
+
+    /**
      * Indicate that the model's email address should be unverified.
      */
     public function unverified(): static

@@ -9,7 +9,9 @@
         <p>{{ session('status') }}</p>
     @endif
 
-    <a href="{{ route('productos.create') }}">Nuevo producto</a>
+    @can('create', App\Models\Producto::class)
+        <a href="{{ route('productos.create') }}">Nuevo producto</a>
+    @endcan
 
     @foreach ($productos as $producto)
         <div>
@@ -22,15 +24,17 @@
             <p>Stock: {{ $producto->stock }}</p>
             <p>Estado: {{ $producto->activo ? 'Activo' : 'Inactivo' }}</p>
 
-            <a href="{{ route('productos.edit', $producto) }}">Editar</a>
+            @can('update', $producto)
+                <a href="{{ route('productos.edit', $producto) }}">Editar</a>
+            @endcan
 
-            @if (auth()->user()->isAdmin())
+            @can('delete', $producto)
                 <form method="POST" action="{{ route('productos.destroy', $producto) }}" style="display:inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" onclick="return confirm('¿Eliminar este producto?')">Eliminar</button>
                 </form>
-            @endif
+            @endcan
         </div>
     @endforeach
 

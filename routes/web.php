@@ -56,9 +56,10 @@ use App\Http\Controllers\ProductoController;
 // CMS-09 a 12 - Gestión de productos e inventario (panel de administración)
 // 'show' se excluye aquí porque la versión pública vive en /catalogo/{producto}
 // más abajo (sin middleware auth, con su propia lógica de visibilidad).
+// SCRUM-24: solo personal interno (admin/vendedor). Un 'cliente' recibe 403.
 Route::resource('productos', ProductoController::class)
     ->except(['show'])
-    ->middleware('auth');
+    ->middleware(['auth', 'role:admin,vendedor']);
 
 // CMS-11 - Catálogo público: sin login, solo productos activos y con stock
 Route::get('/catalogo', [ProductoController::class, 'catalogo'])->name('catalogo.index');

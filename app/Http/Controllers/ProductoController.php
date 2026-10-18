@@ -15,6 +15,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Producto::class);
+
         $productos = Producto::latest()->paginate(15);
 
         return view('productos.index', compact('productos'));
@@ -25,6 +27,8 @@ class ProductoController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Producto::class);
+
         return view('productos.create');
     }
 
@@ -33,6 +37,8 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Producto::class);
+
         $data = $request->validate([
             'nombre' => ['required', 'string', 'max:150'],
             'descripcion' => ['nullable', 'string', 'max:2000'],
