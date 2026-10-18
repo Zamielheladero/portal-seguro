@@ -1,3 +1,11 @@
+/* SEC-07: fuentes servidas desde el propio sitio (antes venían de Google Fonts,
+   lo que generaba la alerta ZAP "Falta atributo de integridad de recursos secundarios"). */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/poppins/700.css';
+
 :root {
     --verde: #006b3f;
     --verde-oscuro: #004d2d;
@@ -161,4 +169,13 @@ main a {
 
 main a:hover {
     text-decoration: underline;
+}
+
+/* Formularios en línea (botón Eliminar del listado de productos) */
+form.form-inline {
+    display: inline;
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    margin: 0;
 }

@@ -29,10 +29,10 @@
             @endcan
 
             @can('delete', $producto)
-                <form method="POST" action="{{ route('productos.destroy', $producto) }}" style="display:inline">
+                <form method="POST" action="{{ route('productos.destroy', $producto) }}" class="form-inline" data-confirm="¿Eliminar este producto?">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('¿Eliminar este producto?')">Eliminar</button>
+                    <button type="submit">Eliminar</button>
                 </form>
             @endcan
         </div>

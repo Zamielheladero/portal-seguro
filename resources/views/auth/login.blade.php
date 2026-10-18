@@ -17,4 +17,6 @@
 
         <button type="submit">Entrar</button>
     </form>
+
+    <p><a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a></p>
 @endsection
