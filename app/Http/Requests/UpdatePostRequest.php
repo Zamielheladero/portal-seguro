@@ -22,8 +22,11 @@ class UpdatePostRequest extends FormRequest
      */
     public function rules(): array
     {
+        // H-SAST: antes estaba vacío, así que validated() devolvía [] y la
+        // edición no se validaba ni se guardaba. Mismas reglas que al crear.
         return [
-            //
+            'title' => ['required', 'string', 'max:150'],
+            'body' => ['required', 'string', 'max:10000'],
         ];
     }
 }
