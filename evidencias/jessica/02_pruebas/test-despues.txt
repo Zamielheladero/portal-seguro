@@ -1,0 +1,57 @@
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\ExampleTest[39m
+  [32;1m✓[39;22m[90m [39m[90mthat true is true[39m[90m                                                   [39m [90m2.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Unit\UserRolesTest[39m
+  [32;1m✓[39;22m[90m [39m[90mun usuario nuevo es cliente por defecto[39m[90m                             [39m [90m1.00s[39m  
+  [32;1m✓[39;22m[90m [39m[90misAdmin, isVendedor e isStaff responden según el rol with dataset "admin"[39m
+  [32;1m✓[39;22m[90m [39m[90misAdmin, isVendedor e isStaff responden según el rol with dataset "vendedor"[39m
+  [32;1m✓[39;22m[90m [39m[90misAdmin, isVendedor e isStaff responden según el rol with dataset "cliente"[39m
+  [32;1m✓[39;22m[90m [39m[90misAdmin, isVendedor e isStaff responden según el rol with dataset "rol desconocido"[39m
+  [32;1m✓[39;22m[90m [39m[90mel rol no se puede asignar de forma masiva[39m[90m                          [39m [90m0.03s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Feature\ExampleTest[39m
+  [32;1m✓[39;22m[90m [39m[90mthe application returns a successful response[39m[90m                       [39m [90m9.88s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Feature\PostTest[39m
+  [32;1m✓[39;22m[90m [39m[90mel autor edita su publicación y el cambio se guarda[39m[90m                 [39m [90m8.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mla edición valida los datos igual que la creación[39m[90m                   [39m [90m0.27s[39m  
+  [32;1m✓[39;22m[90m [39m[90mnadie puede editar ni eliminar la publicación de otra persona[39m[90m       [39m [90m0.64s[39m  
+  [32;1m✓[39;22m[90m [39m[90muna publicación con HTML se muestra escapada (XSS)[39m[90m                  [39m [90m0.63s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Feature\RolesTest[39m
+  [32;1m✓[39;22m[90m [39m[90mel registro público crea usuarios con rol cliente[39m[90m                   [39m [90m1.17s[39m  
+  [32;1m✓[39;22m[90m [39m[90mno se puede auto-asignar un rol enviando "role" en el registro (mas[39m[90m…[39m [90m0.07s[39m  
+  [32;1m✓[39;22m[90m [39m[90mun cliente recibe 403 en todo el panel de productos[39m[90m                 [39m [90m0.23s[39m  
+  [32;1m✓[39;22m[90m [39m[90mun vendedor puede gestionar productos pero no eliminarlos[39m[90m           [39m [90m0.65s[39m  
+  [32;1m✓[39;22m[90m [39m[90mun admin puede eliminar productos[39m[90m                                   [39m [90m0.05s[39m  
+  [32;1m✓[39;22m[90m [39m[90mel catálogo público sigue abierto para visitantes sin sesión[39m[90m        [39m [90m0.25s[39m  
+  [32;1m✓[39;22m[90m [39m[90mel menú solo muestra "Productos" al personal interno[39m[90m                [39m [90m0.13s[39m  
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Feature\SecurityHeadersTest[39m
+  [32;1m✓[39;22m[90m [39m[90mtoda respuesta lleva las cabeceras de seguridad with dataset "inici[39m[90m…[39m [90m0.28s[39m  
+  [32;1m✓[39;22m[90m [39m[90mtoda respuesta lleva las cabeceras de seguridad with dataset "catál[39m[90m…[39m [90m0.05s[39m  
+  [32;1m✓[39;22m[90m [39m[90mtoda respuesta lleva las cabeceras de seguridad with dataset "login[39m[90m…[39m [90m0.11s[39m  
+  [32;1m✓[39;22m[90m [39m[90mtoda respuesta lleva las cabeceras de seguridad with dataset "regis[39m[90m…[39m [90m0.15s[39m  
+  [32;1m✓[39;22m[90m [39m[90mtoda respuesta lleva las cabeceras de seguridad with dataset "conta[39m[90m…[39m [90m0.18s[39m  
+  [32;1m✓[39;22m[90m [39m[90mtoda respuesta lleva las cabeceras de seguridad with dataset "págin[39m[90m…[39m [90m0.14s[39m  
+  [32;1m✓[39;22m[90m [39m[90mel layout ya no carga recursos de Google Fonts[39m[90m                      [39m [90m0.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mel botón eliminar no usa JavaScript en línea[39m[90m                        [39m [90m0.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mel formulario de contacto no consulta la base de datos (alerta SQLi[39m[90m…[39m [90m0.50s[39m  
+  [32;1m✓[39;22m[90m [39m[90mla CSP no permite scripts ni estilos en línea with dataset "inicio"[39m[90m [39m [90m0.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mla CSP no permite scripts ni estilos en línea with dataset "catálog[39m[90m…[39m [90m0.09s[39m  
+  [32;1m✓[39;22m[90m [39m[90mla CSP no permite scripts ni estilos en línea with dataset "login"[39m[90m  [39m [90m0.07s[39m  
+  [32;1m✓[39;22m[90m [39m[90mla CSP no permite scripts ni estilos en línea with dataset "registr[39m[90m…[39m [90m0.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mla CSP no permite scripts ni estilos en línea with dataset "contact[39m[90m…[39m [90m0.07s[39m  
+  [32;1m✓[39;22m[90m [39m[90mla CSP no permite scripts ni estilos en línea with dataset "página[39m[90m… [39m [90m0.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlas páginas no traen bloques [39m[90m<style>[39m[90m ni atributos style en línea with data[39m[90m…[39m [90m0.06s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlas páginas no traen bloques [39m[90m<style>[39m[90m ni atributos style en línea with data[39m[90m…[39m [90m0.05s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlas páginas no traen bloques [39m[90m<style>[39m[90m ni atributos style en línea with data[39m[90m…[39m [90m0.05s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlas páginas no traen bloques [39m[90m<style>[39m[90m ni atributos style en línea with data[39m[90m…[39m [90m0.05s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlas páginas no traen bloques [39m[90m<style>[39m[90m ni atributos style en línea with data[39m[90m…[39m [90m0.05s[39m  
+  [32;1m✓[39;22m[90m [39m[90mlas páginas no traen bloques [39m[90m<style>[39m[90m ni atributos style en línea with data[39m[90m…[39m [90m0.05s[39m  
+  [32;1m✓[39;22m[90m [39m[90mel detalle del catálogo solo muestra "Editar" a quien puede editar[39m[90m  [39m [90m0.29s[39m  
+
+  [90mTests:[39m    [32;1m41 passed[39;22m[90m (185 assertions)[39m
+  [90mDuration:[39m [39m40.36s[39m
+

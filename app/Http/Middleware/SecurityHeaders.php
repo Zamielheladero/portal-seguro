@@ -49,14 +49,15 @@ class SecurityHeaders
     /**
      * Solo se permite cargar recursos del propio sitio.
      * - Las fuentes ya no vienen de Google Fonts: se sirven desde /build con Vite.
-     * - 'unsafe-inline' solo en estilos, por el bloque <style> del layout.
-     *   Los scripts NO permiten código en línea (ni onclick=...), que es lo que frena un XSS.
+     * - Ni scripts ni estilos permiten código en línea: los estilos que estaban en
+     *   bloques <style> se movieron a resources/css (alerta ZAP "CSP: style-src unsafe-inline").
+     *   Sin onclick=... ni <script> en línea, un XSS inyectado no se ejecuta.
      * - En desarrollo con "npm run dev" se permite el servidor de Vite.
      */
     private function contentSecurityPolicy(): string
     {
         $script = ["'self'"];
-        $style = ["'self'", "'unsafe-inline'"];
+        $style = ["'self'"];
         $connect = ["'self'"];
 
         if (Vite::isRunningHot()) {

@@ -1,0 +1,32 @@
+/* SEC: estilos de las páginas de error propias (sin <style> en línea). */
+.pagina-error {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.error-caja {
+    max-width: 28rem;
+    text-align: center;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    box-shadow: var(--sombra);
+}
+
+.error-codigo {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--verde);
+    margin: 0;
+}
+
+.error-volver {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--verde);
+    font-weight: 600;
+}

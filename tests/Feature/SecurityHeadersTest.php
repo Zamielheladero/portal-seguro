@@ -3,6 +3,7 @@
 use App\Models\Producto;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
@@ -54,7 +55,7 @@ test('el botón eliminar no usa JavaScript en línea', function () {
 });
 
 test('el formulario de contacto no consulta la base de datos (alerta SQLi = falso positivo)', function () {
-    \Illuminate\Support\Facades\DB::enableQueryLog();
+    DB::enableQueryLog();
 
     $this->from('/contacto')->post('/contacto', [
         'name' => 'ZAP',
@@ -62,9 +63,39 @@ test('el formulario de contacto no consulta la base de datos (alerta SQLi = fals
         'message' => 'prueba',
     ])->assertRedirect('/contacto')->assertSessionHasErrors('email');
 
-    $consultas = collect(\Illuminate\Support\Facades\DB::getQueryLog())
+    $consultas = collect(DB::getQueryLog())
         ->pluck('query')
         ->reject(fn ($q) => str_contains($q, 'sessions') || str_contains($q, 'cache'));
 
     expect($consultas)->toBeEmpty();
+});
+
+/*
+| Hallazgo ZAP escaneo 2 (17-oct-2026): "CSP: style-src unsafe-inline".
+| Los bloques <style> se movieron a resources/css y la CSP ya no permite estilos en línea.
+*/
+
+test('la CSP no permite scripts ni estilos en línea', function (string $url) {
+    $csp = $this->get($url)->headers->get('Content-Security-Policy');
+
+    expect($csp)->toContain("style-src 'self'")
+        ->and($csp)->toContain("script-src 'self'")
+        ->and($csp)->not->toContain('unsafe-inline')
+        ->and($csp)->not->toContain('unsafe-eval');
+})->with('paginas');
+
+test('las páginas no traen bloques <style> ni atributos style en línea', function (string $url) {
+    $html = $this->get($url)->getContent();
+
+    expect($html)->not->toContain('<style')
+        ->and(preg_match('/\sstyle\s*=/i', $html))->toBe(0);
+})->with('paginas');
+
+test('el detalle del catálogo solo muestra "Editar" a quien puede editar', function () {
+    $producto = Producto::create(['nombre' => 'Llave inglesa', 'precio' => 30000, 'stock' => 4, 'activo' => true]);
+    $editar = route('productos.edit', $producto);
+
+    $this->get("/catalogo/{$producto->id}")->assertDontSee($editar);
+    $this->actingAs(User::factory()->create())->get("/catalogo/{$producto->id}")->assertDontSee($editar);
+    $this->actingAs(User::factory()->vendedor()->create())->get("/catalogo/{$producto->id}")->assertSee($editar);
 });
