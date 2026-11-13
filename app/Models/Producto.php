@@ -27,7 +27,7 @@ class Producto extends Model
      */
     public function getImagenUrlAttribute(): ?string
     {
-        return $this->imagen ? asset('storage/' . $this->imagen) : null;
+        return $this->imagen ? asset('storage/'.$this->imagen) : null;
     }
 
     /**

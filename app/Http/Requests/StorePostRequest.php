@@ -21,10 +21,10 @@ class StorePostRequest extends FormRequest
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
-    return [
-        'title' => ['required', 'string', 'max:150'],
-        'body' => ['required', 'string', 'max:10000'],
-    ];
-}
+    {
+        return [
+            'title' => ['required', 'string', 'max:150'],
+            'body' => ['required', 'string', 'max:10000'],
+        ];
+    }
 }

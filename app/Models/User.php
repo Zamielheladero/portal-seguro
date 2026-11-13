@@ -20,7 +20,9 @@ class User extends Authenticatable
      *  - cliente:  cualquier persona que se registra desde el sitio público. Sin acceso al panel.
      */
     public const ROLE_ADMIN = 'admin';
+
     public const ROLE_VENDEDOR = 'vendedor';
+
     public const ROLE_CLIENTE = 'cliente';
 
     public const ROLES = [
