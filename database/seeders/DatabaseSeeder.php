@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Diseño AgroPoste: catálogo inicial (idempotente).
+        $this->call(ProductoSeeder::class);
+
         // SCRUM-24: el registro público ahora crea usuarios 'cliente', así que
         // el primer administrador se crea aquí. Las credenciales salen del .env
         // (ADMIN_EMAIL / ADMIN_PASSWORD) para no dejar contraseñas en el código.
