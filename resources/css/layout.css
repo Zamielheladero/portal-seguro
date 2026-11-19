@@ -1,129 +1,144 @@
-/* SEC: estilos movidos desde layouts/app.blade.php para retirar 'unsafe-inline' de la CSP. */
-:root {
-    --verde: #1f4e44;
-    --verde-oscuro: #163a32;
-    --verde-claro: #e8f5f1;
-    --texto: #22272b;
-    --gris: #6b7280;
-    --borde: #e2e5e9;
-    --fondo: #f7f8fa;
-}
-
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: var(--texto);
-    background: var(--fondo);
-    line-height: 1.55;
-}
-
-h1, h2, h3 {
-    font-family: 'Poppins', 'Inter', sans-serif;
-    color: var(--verde-oscuro);
-    margin-top: 0;
-}
-
-h1 { font-size: 1.9rem; margin-bottom: 1.2rem; }
-h2 { font-size: 1.25rem; }
-
-a { color: var(--verde); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-header {
-    background: #fff;
-    border-bottom: 1px solid var(--borde);
-}
-
-header nav {
-    max-width: 1080px;
+/*
+ * Páginas internas del CMS (panel de productos y cotizaciones, publicaciones,
+ * cuenta, login y contacto) con la paleta AgroPoste.
+ * Todo va dentro de <main class="contenido"> para no afectar las páginas públicas.
+ * SEC: sin estilos en línea (la CSP usa style-src 'self').
+ */
+.contenido {
+    width: min(1080px, calc(100% - 40px));
     margin: 0 auto;
-    padding: 0.9rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1.4rem;
-    flex-wrap: wrap;
+    padding: 45px 0 80px;
+    min-height: 55vh;
 }
 
-header nav a {
-    color: var(--texto);
-    font-weight: 500;
-    font-size: 0.95rem;
-}
+.contenido h1 { font-size: 34px; color: var(--forest-dark); margin-bottom: 18px; }
+.contenido h2 { font-size: 20px; color: var(--forest-dark); margin-bottom: 6px; }
+.contenido p { color: var(--muted); }
+.contenido a { color: var(--forest); font-weight: 700; }
+.contenido a:hover { text-decoration: underline; }
+.contenido img { border-radius: 8px; }
 
-header nav a:hover { color: var(--verde); text-decoration: none; }
-
-header nav form { margin-left: auto; }
-
-header nav button {
-    background: transparent;
-    border: 1px solid var(--borde);
-    border-radius: 6px;
-    padding: 0.45rem 0.9rem;
-    font-family: inherit;
-    font-size: 0.9rem;
-    color: var(--texto);
-    cursor: pointer;
-}
-
-header nav button:hover { border-color: var(--verde); color: var(--verde); }
-
-main {
-    max-width: 1080px;
-    margin: 2rem auto;
-    padding: 0 1.5rem 3rem;
-}
-
-/* Cards genéricas: cualquier <div> directo dentro de listados de
-   productos/posts hereda este look sin tener que tocar cada vista */
-main > div, main form {
-    background: #fff;
-    border: 1px solid var(--borde);
+/* Mensaje de estado: las vistas del CMS lo imprimen justo después del <h1> */
+.contenido > h1 + p {
+    background: var(--grass);
+    border: 1px solid #cfe0c8;
+    color: var(--forest);
+    padding: 12px 16px;
     border-radius: 10px;
-    padding: 1.5rem;
-}
-
-main form { max-width: 480px; margin-bottom: 1.5rem; }
-
-label {
-    display: block;
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin: 0.9rem 0 0.3rem;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="file"],
-textarea {
-    width: 100%;
-    padding: 0.6rem 0.7rem;
-    border: 1px solid var(--borde);
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.95rem;
-}
-
-textarea { min-height: 90px; resize: vertical; }
-
-button[type="submit"] {
-    margin-top: 1.2rem;
-    background: var(--verde);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 0.65rem 1.4rem;
-    font-family: inherit;
     font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
 }
 
-button[type="submit"]:hover { background: var(--verde-oscuro); }
+/* Tarjetas: cada <div> directo de un listado (productos, publicaciones, cotizaciones) */
+.contenido > div {
+    background: #fff;
+    border: 1px solid #e3e5df;
+    border-radius: 16px;
+    padding: 22px 25px;
+    margin-bottom: 14px;
+    box-shadow: var(--sombra);
+}
 
-p { color: var(--gris); }
+/* Formularios del CMS */
+.contenido form {
+    background: #fff;
+    border: 1px solid #e3e5df;
+    border-radius: 16px;
+    padding: 25px;
+    max-width: 560px;
+    margin: 0 0 20px;
+    box-shadow: var(--sombra);
+}
 
-img { border-radius: 6px; }
+.contenido label {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    margin: 16px 0 6px;
+    color: var(--ink);
+}
+
+.contenido input[type="text"],
+.contenido input[type="email"],
+.contenido input[type="password"],
+.contenido input[type="number"],
+.contenido input[type="file"],
+.contenido select,
+.contenido textarea {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5c9;
+    border-radius: 10px;
+    background: #fff;
+    font: inherit;
+    font-size: 15px;
+    outline-color: var(--forest);
+}
+
+.contenido textarea { min-height: 110px; resize: vertical; }
+.contenido input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--forest); margin-right: 6px; vertical-align: -3px; }
+
+.contenido button[type="submit"] {
+    margin-top: 20px;
+    min-height: 48px;
+    background: var(--forest);
+    color: #fff;
+    border: 0;
+    border-radius: 12px;
+    padding: 0 22px;
+    font-weight: 800;
+    box-shadow: 0 6px 16px #2f5d3a26;
+}
+
+.contenido button[type="submit"]:hover { background: var(--forest-dark); }
+
+/* Errores de validación dentro de formularios */
+.contenido form p { color: var(--rojo-error); font-size: 13px; font-weight: 600; margin: 5px 0 0; }
+
+/* Formularios en línea (botón Eliminar del listado de productos) */
+.contenido form.form-inline {
+    display: inline;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+.contenido form.form-inline button[type="submit"] {
+    margin: 0 0 0 12px;
+    min-height: 0;
+    padding: 6px 12px;
+    background: #fff;
+    color: var(--rojo-error);
+    border: 1px solid #f1c4bf;
+    border-radius: 8px;
+    box-shadow: none;
+    font-size: 13px;
+}
+
+/* Datos del catálogo en el formulario de productos */
+.campos-catalogo { border: 1px solid var(--line); border-radius: 12px; padding: 4px 18px 18px; margin-top: 22px; }
+.campos-catalogo legend { font-family: "Nunito", sans-serif; font-weight: 800; color: var(--forest-dark); padding: 0 6px; }
+.campos-dobles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Cotizaciones en el panel */
+.fila-panel { display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+.fila-panel p { margin: 2px 0; font-size: 14px; }
+.fila-panel-lado { text-align: right; display: grid; gap: 6px; justify-items: end; }
+.fila-panel-lado strong { font-family: "Nunito", sans-serif; font-size: 20px; color: var(--forest-dark); }
+.estado { border-radius: 99px; padding: 4px 10px; font-size: 12px; font-weight: 800; background: var(--grass); color: var(--forest); }
+.estado-pendiente { background: #fbe8c6; color: #734706; }
+.estado-rechazada { background: #fde4e1; color: #912018; }
+.tabla-panel { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla-panel th, .tabla-panel td { text-align: left; padding: 9px 6px; border-bottom: 1px solid var(--line); }
+.tabla-panel td:last-child, .tabla-panel th:last-child { text-align: right; }
+.tabla-panel tfoot td { color: var(--muted); }
+
+@media (max-width: 600px) {
+    .contenido { width: calc(100% - 28px); padding-top: 28px; }
+    .contenido h1 { font-size: 28px; }
+    .fila-panel { flex-direction: column; align-items: start; }
+    .fila-panel-lado { text-align: left; justify-items: start; }
+}
