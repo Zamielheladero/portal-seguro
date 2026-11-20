@@ -64,6 +64,26 @@ document.querySelectorAll('[data-qty]').forEach((wrapper) => {
     });
 });
 
+// Cotización paso 2: entrega en finca o recoger en el punto de venta
+document.querySelectorAll('[data-form-entrega]').forEach((form) => {
+    const opciones = form.querySelectorAll('[data-tipo-entrega]');
+    const domicilio = form.querySelector('[data-solo-domicilio]');
+    const recoger = form.querySelector('[data-solo-recoger]');
+    const vereda = form.querySelector('[data-vereda]');
+    const sync = () => {
+        const recoge = form.querySelector('[data-tipo-entrega]:checked')?.value === 'recoger';
+        domicilio.hidden = recoge;
+        recoger.hidden = !recoge;
+        vereda.required = !recoge;
+        // Resumen: transporte y total cambian según la opción (textos calculados en el servidor)
+        document.querySelectorAll('[data-resumen-transporte-etiqueta], [data-resumen-transporte], [data-resumen-total]').forEach((el) => {
+            el.textContent = recoge ? el.dataset.sin : el.dataset.con;
+        });
+    };
+    opciones.forEach((opcion) => opcion.addEventListener('change', sync));
+    sync();
+});
+
 // Descargar resumen: el navegador permite guardarlo como PDF
 document.querySelectorAll('[data-print]').forEach((button) =>
     button.addEventListener('click', () => window.print()),

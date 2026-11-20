@@ -86,11 +86,15 @@ class CotizacionController extends Controller
 
     public function guardarEntrega(GuardarEntregaRequest $request, Cotizador $cotizador)
     {
+        $recoge = $request->input('tipo_entrega') === Cotizacion::RECOGER;
+
         // Departamento y municipio los fija el servidor: solo se entrega en Ubaté.
         $cotizador->guardarEntrega([
-            ...$request->safe()->only(['nombre_cliente', 'telefono', 'vereda', 'indicaciones']),
+            ...$request->safe()->only(['nombre_cliente', 'telefono', 'tipo_entrega', 'vereda', 'indicaciones']),
             'departamento' => config('agroposte.zona.departamento'),
             'municipio' => config('agroposte.zona.municipio'),
+            // Quien recoge no necesita dirección de entrega.
+            ...($recoge ? ['vereda' => null, 'indicaciones' => null] : []),
         ]);
 
         return redirect()->route('cotizacion.show', ['paso' => 3]);

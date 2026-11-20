@@ -5,6 +5,10 @@
 
 @section('content')
 @php
+    $recoge = ($entrega['tipo_entrega'] ?? 'domicilio') === 'recoger';
+    $transporteDomicilio = $totales['subtotal'] > 0 ? (int) config('agroposte.shipping_estimate') : 0;
+@endphp
+@php
     $whatsappText = "Hola AgroPoste, quiero cotizar:\n"
         .$items->map(fn ($item) => "- {$item['cantidad']} × {$item['producto']->nombre}")->implode("\n")
         ."\nTotal estimado: $ ".number_format($totales['total'], 0, ',', '.');
@@ -19,7 +23,7 @@
                     <p>Le tomará menos de 3 minutos.</p>
                 </div>
                 <div class="stepper">
-                    @foreach (['Productos', 'Ubicación', 'Resumen'] as $index => $label)
+                    @foreach (['Productos', 'Entrega', 'Resumen'] as $index => $label)
                         <div @class(['active' => $paso >= $index + 1])>
                             <b>
                                 @if ($paso > $index + 1)
@@ -110,11 +114,35 @@
                             </div>
                         @endif
                     @elseif ($paso === 2)
-                        <form method="POST" action="{{ route('cotizacion.entrega') }}" class="panel location-panel">
+                        @php
+                            $tipoEntrega = old('tipo_entrega', $entrega['tipo_entrega'] ?? 'domicilio');
+                        @endphp
+                        <form method="POST" action="{{ route('cotizacion.entrega') }}" class="panel location-panel" data-form-entrega>
                             @csrf
                             <span>Paso 2 de 3</span>
-                            <h2>¿Dónde queda su finca?</h2>
-                            <p>Con esto calculamos el transporte y tiempo de entrega.</p>
+                            <h2>¿Cómo quiere recibir su pedido?</h2>
+                            <p>Se lo llevamos a la finca o, si prefiere, lo recoge y no paga transporte.</p>
+
+                            <fieldset class="opciones-entrega">
+                                <legend class="sr-only">Tipo de entrega</legend>
+                                <label class="opcion-entrega">
+                                    <input type="radio" name="tipo_entrega" value="domicilio" data-tipo-entrega @checked($tipoEntrega === 'domicilio')>
+                                    <span>
+                                        <x-icon name="truck" />
+                                        <strong>Entrega en su finca</strong>
+                                        <small>Transporte estimado @cop(config('agroposte.shipping_estimate')) · casco urbano y veredas de {{ $zona['municipio'] }}</small>
+                                    </span>
+                                </label>
+                                <label class="opcion-entrega">
+                                    <input type="radio" name="tipo_entrega" value="recoger" data-tipo-entrega @checked($tipoEntrega === 'recoger')>
+                                    <span>
+                                        <x-icon name="map" />
+                                        <strong>Lo recojo yo</strong>
+                                        <small>Sin costo de transporte · {{ config('agroposte.pickup') }}</small>
+                                    </span>
+                                </label>
+                                @error('tipo_entrega') <em class="field-error">{{ $message }}</em> @enderror
+                            </fieldset>
 
                             <div class="field-row">
                                 <label>
@@ -128,12 +156,13 @@
                                     @error('telefono') <em class="field-error">{{ $message }}</em> @enderror
                                 </label>
                             </div>
+                            <div data-solo-domicilio @if ($tipoEntrega === 'recoger') hidden @endif>
                             <div class="info-note">
                                 <x-icon name="map" /> Entregamos solo en {{ $zona['municipio'] }}, {{ $zona['departamento'] }}: casco urbano y veredas.
                             </div>
                             <label>
                                 Vereda o sector
-                                <input name="vereda" value="{{ old('vereda', $entrega['vereda'] ?? '') }}" maxlength="80" placeholder="Nombre de la vereda o el sector" required>
+                                <input name="vereda" value="{{ old('vereda', $entrega['vereda'] ?? '') }}" maxlength="80" placeholder="Nombre de la vereda o el sector" data-vereda>
                                 @error('vereda') <em class="field-error">{{ $message }}</em> @enderror
                             </label>
                             <label class="note">
@@ -143,6 +172,11 @@
                             </label>
                             <div class="info-note">
                                 <x-icon name="truck" /> Entrega estimada en 3 a 5 días hábiles.
+                            </div>
+                            </div>
+
+                            <div class="success-note" data-solo-recoger @if ($tipoEntrega !== 'recoger') hidden @endif>
+                                <x-icon name="check" /> Un asesor le avisa por WhatsApp cuando su pedido esté listo para recoger en {{ config('agroposte.pickup') }}.
                             </div>
 
                             <div class="step-actions">
@@ -169,11 +203,19 @@
                                 <h3>Entrega</h3>
                                 <p>
                                     <span>
-                                        {{ $entrega['vereda'] ?? '' }}, {{ $entrega['municipio'] }} ({{ $entrega['departamento'] }})
-                                        <br>
-                                        <small>{{ $entrega['nombre_cliente'] }} · {{ $entrega['telefono'] }}</small>
-                                        <br>
-                                        <small>Tiempo estimado: 3 a 5 días</small>
+                                        @if (($entrega['tipo_entrega'] ?? 'domicilio') === 'recoger')
+                                            Recoge en {{ config('agroposte.pickup') }}
+                                            <br>
+                                            <small>{{ $entrega['nombre_cliente'] }} · {{ $entrega['telefono'] }}</small>
+                                            <br>
+                                            <small>Sin costo de transporte. Le avisamos cuando esté listo.</small>
+                                        @else
+                                            {{ $entrega['vereda'] ?? '' }}, {{ $entrega['municipio'] }} ({{ $entrega['departamento'] }})
+                                            <br>
+                                            <small>{{ $entrega['nombre_cliente'] }} · {{ $entrega['telefono'] }}</small>
+                                            <br>
+                                            <small>Tiempo estimado: 3 a 5 días</small>
+                                        @endif
                                     </span>
                                     <a href="{{ route('cotizacion.show', ['paso' => 2]) }}">Editar</a>
                                 </p>
@@ -201,16 +243,14 @@
                             <b>− @cop($totales['descuento'])</b>
                         </p>
                         <p>
-                            <span>
-                                Transporte estimado
-                                <button type="button" title="Costo aproximado; un asesor lo confirma según el acceso a su finca." aria-label="Costo aproximado">?</button>
-                            </span>
-                            <b>@cop($totales['transporte'])</b>
+                            {{-- En el paso 2 el JS cambia esta línea al elegir "Lo recojo yo" (textos ya calculados en el servidor). --}}
+                            <span data-resumen-transporte-etiqueta data-con="Transporte estimado" data-sin="Transporte (lo recoge usted)">{{ $recoge ? 'Transporte (lo recoge usted)' : 'Transporte estimado' }}</span>
+                            <b data-resumen-transporte data-con="@cop($transporteDomicilio)" data-sin="@cop(0)">@cop($totales['transporte'])</b>
                         </p>
                     </div>
                     <div class="total">
                         <span>Total estimado<small>IVA incluido</small></span>
-                        <strong>@cop($totales['total'])</strong>
+                        <strong data-resumen-total data-con="@cop($totales['subtotal'] - $totales['descuento'] + $transporteDomicilio)" data-sin="@cop($totales['subtotal'] - $totales['descuento'])">@cop($totales['total'])</strong>
                     </div>
 
                     @if ($items->isNotEmpty())

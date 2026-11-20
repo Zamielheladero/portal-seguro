@@ -33,6 +33,7 @@
                         <div>
                             <strong>{{ $zona['municipio'] }}, {{ $zona['departamento'] }}</strong>
                             <p>Entregamos en el casco urbano y en las veredas del municipio. Entregas de 2 a 7 días.</p>
+                            <p>¿Prefiere recogerlo? Al cotizar elija <strong>Lo recojo yo</strong> y no paga transporte.</p>
                         </div>
                     </div>
                 @elseif ($tipo === 'garantias')

@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="print-only quote-detail">
-                    <p>{{ $cotizacion->nombre_cliente }} · {{ $cotizacion->telefono }} · {{ collect([$cotizacion->vereda, $cotizacion->municipio])->filter()->implode(', ') }}</p>
+                    <p>{{ $cotizacion->nombre_cliente }} · {{ $cotizacion->telefono }} · {{ $cotizacion->recogeEnPunto() ? 'Recoge en '.config('agroposte.pickup') : collect([$cotizacion->vereda, $cotizacion->municipio])->filter()->implode(', ') }}</p>
                     <table>
                         @foreach ($cotizacion->items as $item)
                             <tr>
@@ -32,7 +32,7 @@
                             </tr>
                         @endforeach
                         <tr><td>Descuento por volumen</td><td>− @cop($cotizacion->descuento)</td></tr>
-                        <tr><td>Transporte estimado</td><td>@cop($cotizacion->transporte)</td></tr>
+                        <tr><td>{{ $cotizacion->recogeEnPunto() ? 'Transporte (lo recoge usted)' : 'Transporte estimado' }}</td><td>@cop($cotizacion->transporte)</td></tr>
                         <tr><th>Total estimado (IVA incluido)</th><th>@cop($cotizacion->total)</th></tr>
                     </table>
                 </div>
@@ -41,7 +41,9 @@
                     <h2>¿Qué sigue?</h2>
                     @foreach ([
                         ['1', 'Revisamos disponibilidad', 'Hoy, antes de las 5:00 p. m.'],
-                        ['2', 'Confirmamos transporte', 'Validamos acceso y fecha de entrega.'],
+                        $cotizacion->recogeEnPunto()
+                            ? ['2', 'Alistamos su pedido', 'Le avisamos por WhatsApp cuándo puede recogerlo.']
+                            : ['2', 'Confirmamos transporte', 'Validamos acceso y fecha de entrega.'],
                         ['3', 'Usted decide', 'Solo paga cuando apruebe la cotización.'],
                     ] as [$numero, $titulo, $descripcion])
                         <div>

@@ -12,7 +12,11 @@
     <div>
         <h2>Cliente</h2>
         <p>{{ $cotizacion->nombre_cliente }} · {{ $cotizacion->telefono }}</p>
-        <p>{{ collect([$cotizacion->vereda, $cotizacion->municipio, $cotizacion->departamento])->filter()->implode(', ') }}</p>
+        @if ($cotizacion->recogeEnPunto())
+            <p>Entrega: recoge en {{ config('agroposte.pickup') }} (sin transporte)</p>
+        @else
+            <p>Entrega en finca: {{ collect([$cotizacion->vereda, $cotizacion->municipio, $cotizacion->departamento])->filter()->implode(', ') }}</p>
+        @endif
         @if ($cotizacion->indicaciones)
             <p>Indicaciones: {{ $cotizacion->indicaciones }}</p>
         @endif
@@ -43,7 +47,7 @@
             <tfoot>
                 <tr><td colspan="3">Subtotal</td><td>@cop($cotizacion->subtotal)</td></tr>
                 <tr><td colspan="3">Descuento por volumen</td><td>− @cop($cotizacion->descuento)</td></tr>
-                <tr><td colspan="3">Transporte estimado</td><td>@cop($cotizacion->transporte)</td></tr>
+                <tr><td colspan="3">{{ $cotizacion->recogeEnPunto() ? 'Transporte (recoge en el punto)' : 'Transporte estimado' }}</td><td>@cop($cotizacion->transporte)</td></tr>
                 <tr><th colspan="3">Total</th><th>@cop($cotizacion->total)</th></tr>
             </tfoot>
         </table>
