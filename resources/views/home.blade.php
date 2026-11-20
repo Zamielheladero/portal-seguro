@@ -13,7 +13,7 @@
                     <x-icon name="shield" :size="18" /> Madera seleccionada y garantizada
                 </div>
                 <h1>Estacones para su finca, <em>sin vueltas.</em></h1>
-                <p>Cotice postes, madera y cercas con precios claros. Se los llevamos hasta su finca en Cundinamarca y Boyacá.</p>
+                <p>Cotice postes, madera y cercas con precios claros. Se los llevamos hasta su finca en Ubaté.</p>
                 <div class="hero-buttons">
                     <a href="{{ route('cotizacion.show') }}" class="btn btn-amber">
                         <x-icon name="calculator" :size="20" /><span>Cotizar ahora</span>
@@ -38,7 +38,7 @@
             <div class="steps">
                 @foreach ([
                     ['01', 'Elija lo que necesita', 'Compare medidas, maderas y precios con información fácil de entender.', 'fence'],
-                    ['02', 'Calcule su cotización', 'Indique cantidades y municipio. Le mostramos todo antes de solicitar.', 'calculator'],
+                    ['02', 'Calcule su cotización', 'Indique cantidades y su vereda. Le mostramos todo antes de solicitar.', 'calculator'],
                     ['03', 'Reciba en su finca', 'Coordinamos la entrega y le avisamos cuándo llega su pedido.', 'truck'],
                 ] as [$numero, $titulo, $descripcion, $icono])
                     <div class="step">
@@ -103,12 +103,12 @@
     <section class="testimonial section">
         <div class="container">
             <div class="quote-mark">“</div>
-            <blockquote>Pedí 120 estacones para una cerca en Suesca. Me explicaron cuál me servía, vi el precio completo y el camión llegó el día acordado.</blockquote>
+            <blockquote>Pedí 120 estacones para una cerca en Ubaté. Me explicaron cuál me servía, vi el precio completo y el camión llegó el día acordado.</blockquote>
             <div class="farmer">
                 <span>JM</span>
                 <div>
                     <strong>José Manuel Rodríguez</strong>
-                    <small>Ganadero · Suesca, Cundinamarca</small>
+                    <small>Ganadero · Ubaté, Cundinamarca</small>
                 </div>
             </div>
         </div>

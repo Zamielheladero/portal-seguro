@@ -44,9 +44,10 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'coverage' => [
-        'Cundinamarca' => ['Suesca', 'Chocontá', 'Ubaté', 'Zipaquirá', 'Sesquilé', 'Guatavita', 'Tocancipá', 'Gachancipá', 'Nemocón', 'Cogua', 'Tabio', 'Cajicá', 'Chía', 'Sopó', 'La Calera', 'Guasca', 'Villapinzón', 'Lenguazaque', 'Cucunubá', 'Sutatausa', 'Tausa'],
-        'Boyacá' => ['Villa de Leyva', 'Tunja', 'Ventaquemada', 'Samacá', 'Sora', 'Cucaita', 'Sáchica', 'Ráquira', 'Chiquinquirá', 'Duitama', 'Sogamoso', 'Paipa', 'Tibasosa', 'Nobsa', 'Toca', 'Siachoque', 'Soracá', 'Turmequé', 'Umbita', 'Nuevo Colón', 'Jenesano'],
+    // AgroPoste atiende solo Ubaté (casco urbano y veredas).
+    'zona' => [
+        'departamento' => 'Cundinamarca',
+        'municipio' => 'Ubaté',
     ],
 
 ];

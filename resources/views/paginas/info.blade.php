@@ -1,6 +1,6 @@
 @php
     $content = [
-        'transporte' => ['Llegamos hasta su finca', 'Transporte claro, incluso en zona rural', 'Consulte cobertura, costo estimado y tiempos antes de pedir.', 'truck', 'Consulte su municipio', 'Transporte'],
+        'transporte' => ['Llegamos hasta su finca', 'Transporte claro, incluso en zona rural', 'Consulte cobertura, costo estimado y tiempos antes de pedir.', 'truck', '¿Hasta dónde llegamos?', 'Transporte'],
         'garantias' => ['Compra respaldada', 'Madera que dura, garantía que responde', 'Le explicamos qué cubre cada garantía, sin letra pequeña.', 'shield', 'Protección para cada producto', 'Garantías'],
         'asesoria' => ['Asesoría técnica', '¿Qué estacón necesita?', 'Responda dos preguntas sencillas y le recomendamos la mejor opción.', 'phone', 'Cuéntenos sobre su proyecto', 'Asesoría'],
     ][$tipo];
@@ -28,28 +28,11 @@
                 <h2>{{ $panelTitle }}</h2>
 
                 @if ($tipo === 'transporte')
-                    <form method="GET" action="{{ route('transporte') }}" class="search-box">
-                        <x-icon name="search" />
-                        <input name="municipio" value="{{ $resultado['busqueda'] ?? '' }}" maxlength="60" aria-label="Municipio" placeholder="Ej. Suesca, Chocontá, Ubaté...">
-                    </form>
-
-                    @if ($resultado)
-                        @if ($resultado['municipio'])
-                            <div class="success-note">
-                                <x-icon name="check" /> Sí llegamos a {{ $resultado['municipio'] }}, {{ $resultado['departamento'] }}. Transporte estimado desde @cop(config('agroposte.shipping_estimate')).
-                            </div>
-                        @else
-                            <div class="info-note">
-                                <x-icon name="truck" /> No tenemos “{{ $resultado['busqueda'] }}” en la lista, pero escríbanos y revisamos si podemos llegar.
-                            </div>
-                        @endif
-                    @endif
-
                     <div class="coverage">
                         <x-icon name="map" :size="64" />
                         <div>
-                            <strong>Cundinamarca y Boyacá</strong>
-                            <p>Cobertura activa en {{ $totalMunicipios }} municipios. Entregas de 2 a 7 días.</p>
+                            <strong>{{ $zona['municipio'] }}, {{ $zona['departamento'] }}</strong>
+                            <p>Entregamos en el casco urbano y en las veredas del municipio. Entregas de 2 a 7 días.</p>
                         </div>
                     </div>
                 @elseif ($tipo === 'garantias')

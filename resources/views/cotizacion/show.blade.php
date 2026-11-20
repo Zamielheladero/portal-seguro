@@ -110,7 +110,7 @@
                             </div>
                         @endif
                     @elseif ($paso === 2)
-                        <form method="POST" action="{{ route('cotizacion.entrega') }}" class="panel location-panel" data-form-entrega>
+                        <form method="POST" action="{{ route('cotizacion.entrega') }}" class="panel location-panel">
                             @csrf
                             <span>Paso 2 de 3</span>
                             <h2>¿Dónde queda su finca?</h2>
@@ -128,31 +128,17 @@
                                     @error('telefono') <em class="field-error">{{ $message }}</em> @enderror
                                 </label>
                             </div>
+                            <div class="info-note">
+                                <x-icon name="map" /> Entregamos solo en {{ $zona['municipio'] }}, {{ $zona['departamento'] }}: casco urbano y veredas.
+                            </div>
                             <label>
-                                Departamento
-                                <select name="departamento" data-departamento>
-                                    @foreach (array_keys($cobertura) as $departamento)
-                                        <option @selected(old('departamento', $entrega['departamento'] ?? 'Cundinamarca') === $departamento)>{{ $departamento }}</option>
-                                    @endforeach
-                                </select>
-                                @error('departamento') <em class="field-error">{{ $message }}</em> @enderror
-                            </label>
-                            <label>
-                                Municipio
-                                <select name="municipio" data-municipio>
-                                    @foreach ($cobertura as $departamento => $municipios)
-                                        <optgroup label="{{ $departamento }}">
-                                            @foreach ($municipios as $municipio)
-                                                <option @selected(old('municipio', $entrega['municipio'] ?? 'Suesca') === $municipio)>{{ $municipio }}</option>
-                                            @endforeach
-                                        </optgroup>
-                                    @endforeach
-                                </select>
-                                @error('municipio') <em class="field-error">{{ $message }}</em> @enderror
+                                Vereda o sector
+                                <input name="vereda" value="{{ old('vereda', $entrega['vereda'] ?? '') }}" maxlength="80" placeholder="Nombre de la vereda o el sector" required>
+                                @error('vereda') <em class="field-error">{{ $message }}</em> @enderror
                             </label>
                             <label class="note">
                                 Indicaciones para llegar (opcional)
-                                <textarea name="indicaciones" maxlength="500" placeholder="Ej. Vereda Hato Grande, 2 km después de la escuela">{{ old('indicaciones', $entrega['indicaciones'] ?? '') }}</textarea>
+                                <textarea name="indicaciones" maxlength="500" placeholder="Ej. 2 km después de la escuela, portón verde">{{ old('indicaciones', $entrega['indicaciones'] ?? '') }}</textarea>
                                 @error('indicaciones') <em class="field-error">{{ $message }}</em> @enderror
                             </label>
                             <div class="info-note">
@@ -183,7 +169,7 @@
                                 <h3>Entrega</h3>
                                 <p>
                                     <span>
-                                        {{ $entrega['municipio'] }}, {{ $entrega['departamento'] }}
+                                        {{ $entrega['vereda'] ?? '' }}, {{ $entrega['municipio'] }} ({{ $entrega['departamento'] }})
                                         <br>
                                         <small>{{ $entrega['nombre_cliente'] }} · {{ $entrega['telefono'] }}</small>
                                         <br>

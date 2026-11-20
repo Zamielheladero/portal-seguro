@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="print-only quote-detail">
-                    <p>{{ $cotizacion->nombre_cliente }} · {{ $cotizacion->telefono }} · {{ $cotizacion->municipio }}, {{ $cotizacion->departamento }}</p>
+                    <p>{{ $cotizacion->nombre_cliente }} · {{ $cotizacion->telefono }} · {{ collect([$cotizacion->vereda, $cotizacion->municipio])->filter()->implode(', ') }}</p>
                     <table>
                         @foreach ($cotizacion->items as $item)
                             <tr>

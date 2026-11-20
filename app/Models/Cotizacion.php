@@ -18,6 +18,7 @@ class Cotizacion extends Model
         'telefono',
         'departamento',
         'municipio',
+        'vereda',
         'indicaciones',
         'subtotal',
         'descuento',

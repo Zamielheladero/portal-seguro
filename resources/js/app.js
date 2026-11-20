@@ -64,28 +64,6 @@ document.querySelectorAll('[data-qty]').forEach((wrapper) => {
     });
 });
 
-// Municipios según el departamento elegido
-document.querySelectorAll('[data-form-entrega]').forEach((form) => {
-    const departamento = form.querySelector('[data-departamento]');
-    const municipio = form.querySelector('[data-municipio]');
-    const sync = () => {
-        let firstVisible = null;
-        municipio.querySelectorAll('optgroup').forEach((group) => {
-            const visible = group.label === departamento.value;
-            group.hidden = !visible;
-            group.disabled = !visible;
-            if (visible && !firstVisible) {
-                firstVisible = group.querySelector('option');
-            }
-        });
-        if (municipio.selectedOptions[0]?.parentElement.hidden) {
-            municipio.value = firstVisible?.value ?? '';
-        }
-    };
-    departamento.addEventListener('change', sync);
-    sync();
-});
-
 // Descargar resumen: el navegador permite guardarlo como PDF
 document.querySelectorAll('[data-print]').forEach((button) =>
     button.addEventListener('click', () => window.print()),

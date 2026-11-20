@@ -26,9 +26,8 @@ function datosEntrega(array $cambios = []): array
     return [
         'nombre_cliente' => 'José Manuel Rodríguez',
         'telefono' => '310 555 1234',
-        'departamento' => 'Cundinamarca',
-        'municipio' => 'Suesca',
-        'indicaciones' => 'Vereda Hato Grande',
+        'vereda' => 'Vereda Centro',
+        'indicaciones' => 'Después de la escuela',
         ...$cambios,
     ];
 }
@@ -47,7 +46,7 @@ dataset('paginas_agroposte', [
     'catálogo' => '/catalogo',
     'catálogo filtrado' => '/catalogo?tratamiento[]=inmunizado&orden=menor-precio&q=eu',
     'cotización' => '/cotizacion',
-    'transporte' => '/transporte?municipio=suesca',
+    'transporte' => '/transporte',
     'garantías' => '/garantias',
     'asesoría' => '/asesoria?uso=corral&suelo=seco',
 ]);
@@ -147,9 +146,9 @@ test('el flujo completo guarda la cotización con descuento por volumen', functi
     $this->get(route('cotizacion.show'))->assertSee('Todavía no ha agregado productos');
 });
 
-test('la entrega solo acepta municipios con cobertura y teléfonos válidos', function () {
-    $this->post(route('cotizacion.entrega'), datosEntrega(['departamento' => 'Boyacá', 'municipio' => 'Suesca']))
-        ->assertSessionHasErrors('municipio');
+test('la entrega exige vereda y teléfono válido', function () {
+    $this->post(route('cotizacion.entrega'), datosEntrega(['vereda' => '']))
+        ->assertSessionHasErrors('vereda');
 
     $this->post(route('cotizacion.entrega'), datosEntrega(['telefono' => '<script>']))
         ->assertSessionHasErrors('telefono');
@@ -235,7 +234,19 @@ test('la asesoría recomienda un producto disponible', function () {
     $this->get('/asesoria?uso=otro&suelo=seco')->assertDontSee('Le recomendamos');
 });
 
-test('el transporte confirma cobertura sin importar tildes', function () {
-    $this->get('/transporte?municipio=choconta')->assertSee('Sí llegamos a Chocontá', false);
-    $this->get('/transporte?municipio=Medellín')->assertSee('No tenemos');
+test('el sitio solo ofrece entregas en Ubaté', function () {
+    $this->get('/transporte')->assertSee('Ubaté, Cundinamarca')->assertDontSee('Boyacá');
+    $this->get('/')->assertDontSee('Suesca')->assertDontSee('Boyacá');
+});
+
+test('la cotización siempre se guarda en Ubaté aunque envíen otro municipio', function () {
+    $this->post(route('cotizacion.agregar'), ['producto_id' => producto('Vareta de pino')->id]);
+    $this->post(route('cotizacion.entrega'), datosEntrega(['departamento' => 'Boyacá', 'municipio' => 'Tunja']));
+    $this->post(route('cotizacion.store'));
+
+    $cotizacion = Cotizacion::sole();
+
+    expect($cotizacion->municipio)->toBe('Ubaté')
+        ->and($cotizacion->departamento)->toBe('Cundinamarca')
+        ->and($cotizacion->vereda)->toBe('Vereda Centro');
 });

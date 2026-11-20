@@ -9,7 +9,7 @@
         <div class="fila-panel">
             <div>
                 <h2><a href="{{ route('cotizaciones.show', $cotizacion) }}">{{ $cotizacion->codigo }}</a></h2>
-                <p>{{ $cotizacion->nombre_cliente }} · {{ $cotizacion->municipio }}, {{ $cotizacion->departamento }}</p>
+                <p>{{ $cotizacion->nombre_cliente }} · {{ collect([$cotizacion->vereda, $cotizacion->municipio])->filter()->implode(', ') }}</p>
                 <p>{{ $cotizacion->items_count }} {{ $cotizacion->items_count === 1 ? 'producto' : 'productos' }} · {{ $cotizacion->created_at?->format('d/m/Y H:i') }}</p>
             </div>
             <div class="fila-panel-lado">
