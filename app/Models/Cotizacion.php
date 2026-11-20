@@ -16,6 +16,7 @@ class Cotizacion extends Model
     protected $fillable = [
         'nombre_cliente',
         'telefono',
+        'tipo_entrega',
         'departamento',
         'municipio',
         'vereda',
@@ -57,6 +58,15 @@ class Cotizacion extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public const DOMICILIO = 'domicilio';
+
+    public const RECOGER = 'recoger';
+
+    public function recogeEnPunto(): bool
+    {
+        return $this->tipo_entrega === self::RECOGER;
     }
 
     public function primerNombre(): string

@@ -26,6 +26,7 @@ function datosEntrega(array $cambios = []): array
     return [
         'nombre_cliente' => 'José Manuel Rodríguez',
         'telefono' => '310 555 1234',
+        'tipo_entrega' => 'domicilio',
         'vereda' => 'Vereda Centro',
         'indicaciones' => 'Después de la escuela',
         ...$cambios,
@@ -255,4 +256,33 @@ test('login y registro se enlazan entre sí', function () {
     $this->get(route('login'))->assertOk()->assertSee('¿No tienes cuenta?', false)->assertSee(route('register'));
     $this->get(route('register'))->assertOk()->assertSee('¿Ya tienes cuenta?', false)->assertSee(route('login'));
     $this->get('/')->assertSee(route('register'));
+});
+
+test('si el cliente recoge en el punto de venta no se cobra transporte', function () {
+    $this->post(route('cotizacion.agregar'), ['producto_id' => producto('Vareta de pino')->id, 'cantidad' => 10]);
+    $this->post(route('cotizacion.entrega'), datosEntrega(['tipo_entrega' => 'recoger', 'vereda' => '']))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(route('cotizacion.show', ['paso' => 3]));
+
+    $this->get(route('cotizacion.show', ['paso' => 3]))->assertSee('Transporte (lo recoge usted)');
+
+    $this->post(route('cotizacion.store'));
+    $cotizacion = Cotizacion::sole();
+
+    expect($cotizacion->tipo_entrega)->toBe('recoger')
+        ->and($cotizacion->transporte)->toBe(0)
+        ->and($cotizacion->total)->toBe(168000)
+        ->and($cotizacion->vereda)->toBeNull();
+});
+
+test('la entrega en finca sigue exigiendo vereda y cobra transporte', function () {
+    $this->post(route('cotizacion.agregar'), ['producto_id' => producto('Vareta de pino')->id, 'cantidad' => 10]);
+
+    $this->post(route('cotizacion.entrega'), datosEntrega(['vereda' => '']))->assertSessionHasErrors('vereda');
+    $this->post(route('cotizacion.entrega'), datosEntrega(['tipo_entrega' => 'dron']))->assertSessionHasErrors('tipo_entrega');
+
+    $this->post(route('cotizacion.entrega'), datosEntrega());
+    $this->post(route('cotizacion.store'));
+
+    expect(Cotizacion::sole()->transporte)->toBe(280000);
 });

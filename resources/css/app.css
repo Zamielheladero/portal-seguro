@@ -878,6 +878,29 @@ footer { background: #14281a; color: #dce6dd; padding: 70px 0 25px; }
 .duration-bar i.p-90 { width: 90%; }
 .duration-bar i.p-100 { width: 100%; }
 
+/* ---------- Cotización: tipo de entrega ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.opciones-entrega { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0 4px; max-width: 640px; }
+.opciones-entrega .field-error { grid-column: 1 / -1; }
+.opcion-entrega { margin: 0 !important; max-width: none !important; cursor: pointer; }
+.opcion-entrega input { position: absolute; opacity: 0; pointer-events: none; }
+.opcion-entrega > span {
+    display: grid;
+    gap: 4px;
+    height: 100%;
+    padding: 16px;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    background: white;
+    color: var(--forest);
+    transition: 0.2s;
+}
+.opcion-entrega strong { font-family: "Nunito", sans-serif; font-size: 16px; color: var(--ink); }
+.opcion-entrega small { color: var(--muted); font-size: 12px; font-weight: 500; }
+.opcion-entrega input:checked + span { border-color: var(--forest); background: var(--grass); }
+.opcion-entrega input:focus-visible + span { outline: 2px solid var(--forest); outline-offset: 2px; }
+.coverage p + p { margin-top: 8px; }
+
 /* ---------- Paginación ---------- */
 .paginacion { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 30px; font-size: 14px; color: var(--muted); }
 .paginacion a, .paginacion .deshabilitado {
@@ -1078,6 +1101,7 @@ footer { background: #14281a; color: #dce6dd; padding: 70px 0 25px; }
     .helper-inputs .btn { grid-column: auto; }
     .helper-inputs .field-error { position: static; }
     .field-row { grid-template-columns: 1fr; gap: 0; }
+    .opciones-entrega { grid-template-columns: 1fr; }
     .step-actions .btn-primary { flex: 1; }
     .summary { border: 2px solid #dce5d8; }
     .summary .btn-amber { min-height: 56px; }

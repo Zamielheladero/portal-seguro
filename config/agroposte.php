@@ -44,6 +44,9 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    // Punto de venta donde el cliente puede recoger su pedido sin pagar transporte.
+    'pickup' => env('AGROPOSTE_PICKUP', 'Punto de venta AgroPoste en Ubaté'),
+
     // AgroPoste atiende solo Ubaté (casco urbano y veredas).
     'zona' => [
         'departamento' => 'Cundinamarca',

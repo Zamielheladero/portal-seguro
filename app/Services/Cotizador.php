@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Cotizacion;
 use App\Models\Producto;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Collection;
@@ -90,7 +91,8 @@ class Cotizador
         $subtotal = (int) $this->items()->sum('total');
         $regla = config('agroposte.volume_discount');
         $descuento = $subtotal >= $regla['from_subtotal'] ? (int) round($subtotal * $regla['percent'] / 100) : 0;
-        $transporte = $subtotal > 0 ? (int) config('agroposte.shipping_estimate') : 0;
+        // Si el cliente recoge en el punto de venta, no se cobra transporte.
+        $transporte = $subtotal > 0 && ! $this->recogeEnPunto() ? (int) config('agroposte.shipping_estimate') : 0;
 
         return [
             'subtotal' => $subtotal,
@@ -114,6 +116,11 @@ class Cotizador
     public function entrega(): ?array
     {
         return $this->session->get(self::CLAVE_ENTREGA);
+    }
+
+    public function recogeEnPunto(): bool
+    {
+        return ($this->entrega()['tipo_entrega'] ?? Cotizacion::DOMICILIO) === Cotizacion::RECOGER;
     }
 
     public function vaciar(): void
