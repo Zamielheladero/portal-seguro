@@ -64,3 +64,29 @@ Route::resource('productos', ProductoController::class)
 // CMS-11 - Catálogo público: sin login, solo productos activos y con stock
 Route::get('/catalogo', [ProductoController::class, 'catalogo'])->name('catalogo.index');
 Route::get('/catalogo/{producto}', [ProductoController::class, 'show'])->name('catalogo.show');
+
+use App\Http\Controllers\CotizacionController;
+use App\Http\Controllers\CotizacionPanelController;
+
+// Diseño AgroPoste - Páginas informativas
+Route::get('/transporte', [HomeController::class, 'transporte'])->name('transporte');
+Route::get('/garantias', [HomeController::class, 'garantias'])->name('garantias');
+Route::get('/asesoria', [HomeController::class, 'asesoria'])->name('asesoria');
+
+// Diseño AgroPoste - Cotización pública (sin login). La lista vive en la sesión.
+Route::prefix('cotizacion')->name('cotizacion.')->group(function () {
+    Route::get('/', [CotizacionController::class, 'show'])->name('show');
+    Route::post('/', [CotizacionController::class, 'store'])->middleware('throttle:10,1')->name('store');
+    Route::post('/productos', [CotizacionController::class, 'agregar'])->middleware('throttle:60,1')->name('agregar');
+    Route::patch('/productos/{producto}', [CotizacionController::class, 'actualizar'])->name('actualizar');
+    Route::post('/calcular', [CotizacionController::class, 'calcular'])->name('calcular');
+    Route::post('/entrega', [CotizacionController::class, 'guardarEntrega'])->name('entrega');
+    Route::get('/{codigo}/confirmacion', [CotizacionController::class, 'confirmacion'])->name('confirmacion');
+});
+
+// Diseño AgroPoste - Cotizaciones recibidas (solo personal interno)
+Route::middleware(['auth', 'role:admin,vendedor'])->prefix('panel')->group(function () {
+    Route::get('/cotizaciones', [CotizacionPanelController::class, 'index'])->name('cotizaciones.index');
+    Route::get('/cotizaciones/{cotizacion}', [CotizacionPanelController::class, 'show'])->name('cotizaciones.show');
+    Route::patch('/cotizaciones/{cotizacion}', [CotizacionPanelController::class, 'update'])->name('cotizaciones.update');
+});

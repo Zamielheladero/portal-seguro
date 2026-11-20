@@ -25,6 +25,8 @@
         <input type="number" name="stock" min="0" value="{{ old('stock', $producto->stock) }}" required>
         @error('stock') <p>{{ $message }}</p> @enderror
 
+        @include('productos._campos-catalogo', ['producto' => $producto])
+
         @if ($producto->imagen_url)
             <p>Imagen actual:</p>
             <img src="{{ $producto->imagen_url }}" alt="{{ $producto->nombre }}" width="120">

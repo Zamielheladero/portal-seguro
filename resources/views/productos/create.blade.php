@@ -24,6 +24,8 @@
         <input type="number" name="stock" min="0" value="{{ old('stock', 0) }}" required>
         @error('stock') <p>{{ $message }}</p> @enderror
 
+        @include('productos._campos-catalogo', ['producto' => null])
+
         <label>Imagen</label>
         <input type="file" name="imagen" accept="image/*">
         @error('imagen') <p>{{ $message }}</p> @enderror
