@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Estacones, postes, madera y alambre para cercas y corrales con entrega en Cundinamarca y Boyacá.">
+    <meta name="description" content="Estacones, postes, madera y alambre para cercas y corrales con entrega en Ubaté, Cundinamarca.">
     <title>@yield('title', 'Inicio') · AgroPoste</title>
     {{-- SEC-07: fuentes locales (Vite) y sin estilos ni scripts en línea. --}}
     @vite(['resources/css/app.css', 'resources/css/layout.css', 'resources/js/app.js'])
@@ -123,9 +123,9 @@
                 <a href="{{ route('contact') }}">Contacto</a>
             </div>
             <div>
-                <h4>Zonas de cobertura</h4>
-                <p>Cundinamarca · Boyacá</p>
-                <p>Consulte entregas a otros departamentos.</p>
+                <h4>Zona de cobertura</h4>
+                <p>Ubaté, Cundinamarca</p>
+                <p>Casco urbano y veredas.</p>
             </div>
         </div>
         <div class="container footer-bottom">

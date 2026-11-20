@@ -12,7 +12,7 @@
     <div>
         <h2>Cliente</h2>
         <p>{{ $cotizacion->nombre_cliente }} · {{ $cotizacion->telefono }}</p>
-        <p>{{ $cotizacion->municipio }}, {{ $cotizacion->departamento }}</p>
+        <p>{{ collect([$cotizacion->vereda, $cotizacion->municipio, $cotizacion->departamento])->filter()->implode(', ') }}</p>
         @if ($cotizacion->indicaciones)
             <p>Indicaciones: {{ $cotizacion->indicaciones }}</p>
         @endif

@@ -36,7 +36,7 @@ class CotizacionController extends Controller
             'items' => $cotizador->items(),
             'totales' => $cotizador->totales(),
             'entrega' => $cotizador->entrega(),
-            'cobertura' => config('agroposte.coverage'),
+            'zona' => config('agroposte.zona'),
         ]);
     }
 
@@ -86,9 +86,12 @@ class CotizacionController extends Controller
 
     public function guardarEntrega(GuardarEntregaRequest $request, Cotizador $cotizador)
     {
-        $cotizador->guardarEntrega($request->safe()->only([
-            'nombre_cliente', 'telefono', 'departamento', 'municipio', 'indicaciones',
-        ]));
+        // Departamento y municipio los fija el servidor: solo se entrega en Ubaté.
+        $cotizador->guardarEntrega([
+            ...$request->safe()->only(['nombre_cliente', 'telefono', 'vereda', 'indicaciones']),
+            'departamento' => config('agroposte.zona.departamento'),
+            'municipio' => config('agroposte.zona.municipio'),
+        ]);
 
         return redirect()->route('cotizacion.show', ['paso' => 3]);
     }

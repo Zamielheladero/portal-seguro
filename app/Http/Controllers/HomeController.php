@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -48,32 +47,11 @@ class HomeController extends Controller
     }
 
     /**
-     * Diseño AgroPoste - Transporte: consulta de cobertura por municipio.
-     * Se compara contra la lista de config/agroposte.php (no toca la base de datos).
+     * Diseño AgroPoste - Transporte: AgroPoste solo entrega en Ubaté.
      */
-    public function transporte(Request $request)
+    public function transporte()
     {
-        $busqueda = Str::limit(trim((string) $request->query('municipio', '')), 60, '');
-        $resultado = null;
-
-        if ($busqueda !== '') {
-            $resultado = ['busqueda' => $busqueda, 'departamento' => null, 'municipio' => null];
-            $normalizado = Str::lower(Str::ascii($busqueda));
-
-            foreach (config('agroposte.coverage') as $departamento => $municipios) {
-                foreach ($municipios as $municipio) {
-                    if (Str::lower(Str::ascii($municipio)) === $normalizado) {
-                        $resultado['departamento'] = $departamento;
-                        $resultado['municipio'] = $municipio;
-                        break 2;
-                    }
-                }
-            }
-        }
-
-        $totalMunicipios = collect(config('agroposte.coverage'))->flatten()->count();
-
-        return view('paginas.info', ['tipo' => 'transporte', 'resultado' => $resultado, 'totalMunicipios' => $totalMunicipios]);
+        return view('paginas.info', ['tipo' => 'transporte', 'zona' => config('agroposte.zona')]);
     }
 
     public function garantias()
