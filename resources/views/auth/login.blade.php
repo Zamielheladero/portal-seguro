@@ -9,14 +9,18 @@
        @csrf
 
         <label>Correo</label>
-        <input type="email" name="email" value="{{ old('email') }}" required>
+        <input type="email" name="email" value="{{ old('email') }}" autocomplete="email" required>
         @error('email') <p>{{ $message }}</p> @enderror
 
         <label>Contraseña</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" autocomplete="current-password" required>
 
         <button type="submit">Entrar</button>
     </form>
 
-    <p><a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a></p>
+    <p class="enlaces-cuenta">
+        ¿No tienes cuenta? <a href="{{ route('register') }}">Regístrate</a>
+        <span aria-hidden="true">·</span>
+        <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
+    </p>
 @endsection

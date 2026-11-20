@@ -54,6 +54,7 @@
             <div class="header-actions">
                 @guest
                     <a href="{{ route('login') }}" class="enlace-ingresar">Ingresar</a>
+                    <a href="{{ route('register') }}" class="enlace-ingresar">Registrarse</a>
                 @endguest
                 <a href="{{ route('cotizacion.show') }}" class="cart-button" aria-label="{{ $cantidadCotizacion ?? 0 }} productos en cotización">
                     <x-icon name="cart" />

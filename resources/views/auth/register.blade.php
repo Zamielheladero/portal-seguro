@@ -25,4 +25,6 @@
 
         <button type="submit">Registrarme</button>
     </form>
+
+    <p class="enlaces-cuenta">¿Ya tienes cuenta? <a href="{{ route('login') }}">Inicia sesión</a></p>
 @endsection
