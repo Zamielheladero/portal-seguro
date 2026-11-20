@@ -96,6 +96,10 @@
 /* Errores de validación dentro de formularios */
 .contenido form p { color: var(--rojo-error); font-size: 13px; font-weight: 600; margin: 5px 0 0; }
 
+/* "¿No tienes cuenta? Regístrate" bajo login y registro */
+.contenido .enlaces-cuenta { font-size: 15px; color: var(--muted); }
+.contenido .enlaces-cuenta span { margin: 0 6px; }
+
 /* Formularios en línea (botón Eliminar del listado de productos) */
 .contenido form.form-inline {
     display: inline;

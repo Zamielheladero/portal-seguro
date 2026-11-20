@@ -250,3 +250,9 @@ test('la cotización siempre se guarda en Ubaté aunque envíen otro municipio',
         ->and($cotizacion->departamento)->toBe('Cundinamarca')
         ->and($cotizacion->vereda)->toBe('Vereda Centro');
 });
+
+test('login y registro se enlazan entre sí', function () {
+    $this->get(route('login'))->assertOk()->assertSee('¿No tienes cuenta?', false)->assertSee(route('register'));
+    $this->get(route('register'))->assertOk()->assertSee('¿Ya tienes cuenta?', false)->assertSee(route('login'));
+    $this->get('/')->assertSee(route('register'));
+});
